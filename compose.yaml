@@ -1,0 +1,30 @@
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: lecrabeinfo-transmission
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      USER: ${WEBUI_USER}
+      PASS: ${WEBUI_PASSWORD}
+      HOST_WHITELIST: ${TRAEFIK_HOST}
+    volumes:
+      - ./config:/config
+      - ./downloads:/downloads
+      - ./watch:/watch
+    ports:
+      - "51413:51413"
+      - "51413:51413/udp"
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.transmission-lecrabeinfo.rule=Host(`${TRAEFIK_HOST}`)
+      - traefik.http.routers.transmission-lecrabeinfo.entryPoints=${TRAEFIK_TRANSMISSION_ENTRYPOINT}
+      - traefik.http.routers.transmission-lecrabeinfo.tls=true
+      - traefik.http.services.transmission-lecrabeinfo.loadbalancer.server.port=9091
+
+networks:
+  default:
+    name: ${NETWORK_NAME}
+    external: true
