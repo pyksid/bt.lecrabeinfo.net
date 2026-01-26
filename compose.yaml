@@ -1,7 +1,8 @@
+name: bt_lecrabeinfo_net
+
 services:
   transmission:
     image: lscr.io/linuxserver/transmission:latest
-    container_name: lecrabeinfo-transmission
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
