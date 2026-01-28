@@ -3,4 +3,5 @@
 config/
 compose.override.yaml
 downloads/
+public/
 watch/

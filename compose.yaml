@@ -14,6 +14,9 @@ services:
       - ./config:/config
       - ./downloads:/downloads
       - ./watch:/watch
+      - ./public:/exports
+      - ./scripts:/scripts:ro
+      - ${FILES_DIR}:/srv/files:ro
     ports:
       - "51413:51413"
       - "51413:51413/udp"
