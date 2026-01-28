@@ -27,6 +27,17 @@ services:
       - traefik.http.routers.transmission-lecrabeinfo.entryPoints=${TRAEFIK_TRANSMISSION_ENTRYPOINT}
       - traefik.http.routers.transmission-lecrabeinfo.tls=true
       - traefik.http.services.transmission-lecrabeinfo.loadbalancer.server.port=9091
+  nginx:
+    image: nginx
+    volumes:
+      - ./public:/usr/share/nginx/html:ro
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.bt-metadata.rule=Host(`${TRAEFIK_HOST}`)
+      - traefik.http.routers.bt-metadata.entryPoints=${TRAEFIK_BT_METADATA_ENTRYPOINT}
+      - traefik.http.routers.bt-metadata.tls=true
+      - traefik.http.routers.bt-metadata.middlewares=torrent-hashes-ip-allowlist@file
 
 networks:
   default:
