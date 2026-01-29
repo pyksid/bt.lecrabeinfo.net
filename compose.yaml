@@ -16,17 +16,17 @@ services:
       - ./watch:/watch
       - ./public:/exports
       - ./scripts:/scripts:ro
-      - ${FILES_DIR}:/srv/files:ro
+      - ${FILES_PATH}:/srv/files
     ports:
       - "51413:51413"
       - "51413:51413/udp"
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.http.routers.transmission-lecrabeinfo.rule=Host(`${TRAEFIK_HOST}`)
-      - traefik.http.routers.transmission-lecrabeinfo.entryPoints=${TRAEFIK_TRANSMISSION_ENTRYPOINT}
-      - traefik.http.routers.transmission-lecrabeinfo.tls=true
-      - traefik.http.services.transmission-lecrabeinfo.loadbalancer.server.port=9091
+      - traefik.http.routers.transmission-bt-lecrabeinfo-net.rule=Host(`${TRAEFIK_HOST}`)
+      - traefik.http.routers.transmission-bt-lecrabeinfo-net.entryPoints=${TRAEFIK_TRANSMISSION_ENTRYPOINT}
+      - traefik.http.routers.transmission-bt-lecrabeinfo-net.tls=true
+      - traefik.http.services.transmission-bt-lecrabeinfo-net.loadbalancer.server.port=9091
   nginx:
     image: nginx
     volumes:
@@ -34,10 +34,10 @@ services:
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.http.routers.bt-metadata.rule=Host(`${TRAEFIK_HOST}`)
-      - traefik.http.routers.bt-metadata.entryPoints=${TRAEFIK_BT_METADATA_ENTRYPOINT}
-      - traefik.http.routers.bt-metadata.tls=true
-      - traefik.http.routers.bt-metadata.middlewares=torrent-hashes-ip-allowlist@file
+      - traefik.http.routers.nginx-bt-lecrabeinfo-net.rule=Host(`${TRAEFIK_HOST}`)
+      - traefik.http.routers.nginx-bt-lecrabeinfo-net.entryPoints=${TRAEFIK_NGINX_ENTRYPOINT}
+      - traefik.http.routers.nginx-bt-lecrabeinfo-net.tls=true
+      - traefik.http.routers.nginx-bt-lecrabeinfo-net.middlewares=torrent-hashes-file-ip-allowlist@file
 
 networks:
   default:
