@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
-rpc_auth="$1"
-output_file="$2"
+set -euo pipefail
 
-transmission-remote --auth "$rpc_auth" -t all -i |
+RPC_AUTH="$1"
+OUTPUT_FILE="$2"
+
+transmission-remote --auth "$RPC_AUTH" -t all -i |
 awk -F': ' '
   /^  Name:/ {name=$2}
   /^  Hash( v1)?:/ {hash=$2}
-  hash && name {print hash " # " name; hash=""; name=""}
-' > "$output_file"
+  hash && name {
+    print hash " # " name
+    hash=""
+    name=""
+  }
+' > "$OUTPUT_FILE"
